@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{>headerlinks}}
+  </head>
+  <body>
+    {{>navbar}}
+    <div class="container-fluid main_header">
+      <div class="row">
+        <div class="col-md-10 col-12 mx-auto justify-content-center" id="Home">
+          <!-- Left Side Div -->
+          <div class="col-md-12 col-12 main_header_left align-items-center">
+            <figure class="errimg">
+              <img
+                class="img-fluid"
+                src="https://res.cloudinary.com/practicaldev/image/fetch/s--_GqDpWw0--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/7aqcppklh6bexoa70320.jpg"
+                alt="Khizar ALi"
+              />
+            </figure>
+            <p>Welcome to Khizar Ali world.</p>
+            <h1>
+              {{errMsg}}
+            </h1>
+            <a
+              href="/"
+              
+              ><button>Go Back</button></a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer Section -->
+    {{>footer}}
+  </body>
+</html>

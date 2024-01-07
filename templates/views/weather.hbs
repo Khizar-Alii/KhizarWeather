@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{>headerlinks}}
+  </head>
+  <body>
+    {{>navbar}}
+    <div class="container-fluid main_header">
+      <div class="row">
+        <div class="col-md-10 col-12 mx-auto">
+            <div class="main_content">
+                <form class="temp_form">
+                    <input type="text" id="cityName" placeholder="Enter Your City Name" autocomplete="off">
+                    <input type="submit" value="search" id="submitBtn">
+                </form>
+            </div>
+            <div class="tempInformation">
+                <div class="top_layer">
+                    <p id="day">Tuesday</p>
+                    <p id="today_data">13 OCT</p>
+                </div>
+                <div class="main_layer">
+                    <p id="city_name">Get output here</p>
+                    <div class="middle_layer">
+                        <p id="temp"><span id="temp_real_val">0</span><sup>o</sup>C</p>
+                        <p id="temp_status">
+                            <i class="fa fa-cloud" aria-hidden="true"></i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer Section -->
+    {{>footer}}
+
+    <script>
+        
+
+
+        // main.js content
+
+    const submitBtn = document.getElementById("submitBtn");
+    const cityNameInput = document.getElementById("cityName");
+    const city_name = document.getElementById("city_name");
+    const temp_status = document.getElementById('temp_status')
+    const temp_real_val = document.getElementById('temp_real_val')
+    const data_hide = document.querySelector('.middle_layer')
+    const day = document.getElementById('day')
+    const today_data = document.getElementById('today_data')
+
+    const getInfo = async (event) => {
+        event.preventDefault();
+        let cityVal = cityNameInput.value;
+
+    if (cityVal === "") {
+    city_name.innerText = `Please write the name before searching`;
+    data_hide.classList.add('data_hide')
+    } else {
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=${cityVal}&units=metric&appid=84e55ce085b68962e53ac9e57fed9f8e`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      const arrData = [data]
+      city_name.innerHTML = `${arrData[0].name},${arrData[0].sys.country}`
+      temp_real_val.innerHTML = arrData[0].main.temp
+      const tempMood = arrData[0].weather[0].main
+      if (tempMood === 'Clear') {           
+        temp_status.innerHTML = `<i class="fa fa-sun" aria-hidden="true" style="color: #eccc68;"></i>`;
+        } else if (tempMood === 'Clouds') {           
+        temp_status.innerHTML = `<i class="fa fa-cloud" aria-hidden="true" style="color: #f1f2f6;"></i>`;
+        } else if (tempMood === 'Rain') {           
+        temp_status.innerHTML = `<i class="fa fa-cloud-rain" aria-hidden="true" style="color: #a4b0be;"></i>`;
+        } else {           
+        temp_status.innerHTML = `<i class="fa fa-sun" aria-hidden="true" style="color: #eccc68;"></i>`;
+        }
+            data_hide.classList.remove('data_hide')
+        } catch (error) {
+            city_name.innerText = `Please write the name before searching`;
+            data_hide.classList.add('data_hide') 
+
+        }
+        }
+        };
+        // for day and date
+        const getDay = () => {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const date = new Date();
+        const dayOfWeek = date.getDay();
+        const dayOfMonth = date.getDate(); 
+        const month = date.getMonth();
+        const dayName = days[dayOfWeek];
+        const monthAbbr = months[month]; 
+        day.innerHTML = dayName
+        today_data.innerHTML = `${dayOfMonth} ${monthAbbr}`
+        }
+        getDay()
+        submitBtn.addEventListener("click", getInfo);
+
+    </script>
+  </body>
+</html>
